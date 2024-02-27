@@ -6,4 +6,4 @@ const passCodeSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('PassCode', passCodeSchema);
+module.exports = mongoose.model('PassCode', passCodeSchema, 'passCode');
