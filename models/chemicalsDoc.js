@@ -4,11 +4,14 @@ const chemicalsSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   count: {
     type: Number,
     default: 0,
   },
 });
+
+chemicalsSchema.index({ name: 1 }, { unique: true }); //! How to prevent duplicates using the index
 
 module.exports = mongoose.model("Chemical", chemicalsSchema);

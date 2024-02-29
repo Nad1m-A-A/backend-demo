@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
 const passCodeRoute = require("./routes/passCodeRoute");
+const chemicalsRoute = require("./routes/chemicalsRoute");
 const connectDB = require("./connect/db");
 app.use(express.json());
 app.use("/pass-code", passCodeRoute);
+app.use("/chemicals", chemicalsRoute);
 
 connectDB();
 
