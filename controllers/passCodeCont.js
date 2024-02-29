@@ -32,4 +32,13 @@ const initializeOrUpdatePassCode = async (req, res) => {
   }
 };
 
-module.exports = { initializeOrUpdatePassCode };
+const getPassCode = async (req, res) => {
+  try {
+    const passCode = await passCodeDoc.findOne({});
+    return res.status(200).json(passCode);
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+
+module.exports = { initializeOrUpdatePassCode, getPassCode };

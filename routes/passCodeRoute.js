@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { initializeOrUpdatePassCode } = require("../controllers/passCodeCont");
-router.route("/").post(initializeOrUpdatePassCode);
+const {
+  initializeOrUpdatePassCode,
+  getPassCode,
+} = require("../controllers/passCodeCont");
+router.route("/").get(getPassCode).post(initializeOrUpdatePassCode);
 
 module.exports = router;
