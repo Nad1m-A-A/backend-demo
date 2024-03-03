@@ -1,14 +1,12 @@
 const chemicalsDoc = require("../models/chemicalsDoc");
-const getChemicals = async (req, res) => {
-  try {
-    const chemicals = await chemicalsDoc.find({});
-    return res.status(200).json(chemicals);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
+const asyncWrapper = require("../utils/asyncWrapper");
+const { createCustomError } = require("../errors/customError");
 
-const addChemical = async (req, res) => {
+const getChemicals = asyncWrapper(async (req, res) => {
+  return res.status(200).json(await chemicalsDoc.find({}));
+});
+
+const addChemical = asyncWrapper(async (req, res, next) => {
   const chemicalName = req.body.name;
   try {
     await chemicalsDoc.create({
@@ -24,40 +22,33 @@ const addChemical = async (req, res) => {
         success: false,
         message: `Duplicate key. ${chemicalName} already exists`,
       });
-    return res.status(500).json({ error: error.message });
+    else next(error);
   }
-};
+});
 
-const updateChemical = async (req, res) => {
-  try {
-    const chemicalToUpdate = await chemicalsDoc.findByIdAndUpdate(
-      req.params.id,
-      { count: req.body.count },
-      { new: true }
-    );
-    return res.status(200).json({
-      success: true,
-      message: `${chemicalToUpdate.name} count was updated!`,
-    });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
+const updateChemical = asyncWrapper(async (req, res, next) => {
+  const chemicalToUpdate = await chemicalsDoc.findByIdAndUpdate(
+    req.params.id,
+    { count: req.body.count },
+    { new: true }
+  );
+  if (!chemicalToUpdate)
+    return next(createCustomError("Chemical to update was not found", 404));
+  return res.status(200).json({
+    success: true,
+    message: `${chemicalToUpdate.name} count was updated!`,
+  });
+});
 
-const deleteChemical = async (req, res) => {
-  try {
-    const chemicalToDelete = await chemicalsDoc.findByIdAndDelete(
-      req.params.id
-    );
-    if (!chemicalToDelete) throw new Error("chemical was not found");
-    return res.status(200).json({
-      success: true,
-      message: `${chemicalToDelete.name} was deleted!`,
-    });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
+const deleteChemical = asyncWrapper(async (req, res, next) => {
+  const chemicalToDelete = await chemicalsDoc.findByIdAndDelete(req.params.id);
+  if (!chemicalToDelete)
+    return next(createCustomError("chemical was not found", 404));
+  return res.status(200).json({
+    success: true,
+    message: `${chemicalToDelete.name} was deleted!`,
+  });
+});
 
 module.exports = {
   getChemicals,
