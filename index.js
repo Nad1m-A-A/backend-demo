@@ -1,12 +1,16 @@
 const express = require("express");
 const app = express();
+const connectDB = require("./connect/db");
 const passCodeRoute = require("./routes/passCodeRoute");
 const chemicalsRoute = require("./routes/chemicalsRoute");
+const shapesRoute = require("./routes/shapesRoute");
+
 const errorHandler = require("./utils/errorHandler");
-const connectDB = require("./connect/db");
+
 app.use(express.json());
 app.use("/pass-code", passCodeRoute);
 app.use("/chemicals", chemicalsRoute);
+app.use("/shapes", shapesRoute);
 app.use(errorHandler);
 
 connectDB();
