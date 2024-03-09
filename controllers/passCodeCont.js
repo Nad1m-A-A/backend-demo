@@ -1,4 +1,5 @@
 const passCodeDoc = require("../models/passCodeDoc");
+const asyncWrapper = require("../utils/asyncWrapper");
 require("dotenv").config();
 const initializeOrUpdatePassCode = async (req, res) => {
   try {
@@ -32,13 +33,20 @@ const initializeOrUpdatePassCode = async (req, res) => {
   }
 };
 
-const getPassCode = async (req, res) => {
-  try {
-    const passCode = await passCodeDoc.findOne({});
-    return res.status(200).json(passCode);
-  } catch (error) {
-    return res.status(500).json({ error });
-  }
-};
+// const getPassCode = async (req, res) => {
+//   try {
+//     const passCode = await passCodeDoc.findOne({});
+//     return res.status(200).json(passCode);
+//   } catch (error) {
+//     return res.status(500).json({ error });
+//   }
+// };
 
-module.exports = { initializeOrUpdatePassCode, getPassCode };
+const validatePassCode = asyncWrapper(async (req, res) => {
+  const { userInput } = req.body;
+  const { passCode } = await passCodeDoc.findOne({});
+  const isValid = userInput === passCode;
+  return res.status(200).json({isValid});
+});
+
+module.exports = { initializeOrUpdatePassCode, validatePassCode };
