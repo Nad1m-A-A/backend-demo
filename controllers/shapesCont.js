@@ -23,6 +23,10 @@ const addShape = asyncWrapper(async (req, res, next) => {
   }
 });
 
+const getShape = asyncWrapper(async (req, res) => {
+  return res.status(200).json(await shapesDoc.findById(req.params.id));
+});
+
 const updateShape = asyncWrapper(async (req, res, next) => {
   const shapeToUpdate = await shapesDoc.findByIdAndUpdate(
     req.params.id,
@@ -33,7 +37,7 @@ const updateShape = asyncWrapper(async (req, res, next) => {
     return next(createCustomError("Shape to update was not found", 404));
   return res.status(200).json({
     success: true,
-    message: `${shapeToUpdate.name} count was updated!`,
+    message: `${shapeToUpdate.name} was updated!`,
   });
 });
 
@@ -50,6 +54,7 @@ const deleteShape = asyncWrapper(async (req, res, next) => {
 module.exports = {
   getShapes,
   addShape,
+  getShape,
   updateShape,
   deleteShape,
 };
