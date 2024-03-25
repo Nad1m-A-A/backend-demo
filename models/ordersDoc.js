@@ -8,7 +8,7 @@ const ordersSchema = new mongoose.Schema({
     type: Object,
     required: true,
   },
-  productionStatus: {
+  production: {
     type: Object,
     required: true,
   },

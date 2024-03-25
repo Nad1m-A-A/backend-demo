@@ -28,6 +28,7 @@ const getShape = asyncWrapper(async (req, res) => {
 });
 
 const updateShape = asyncWrapper(async (req, res, next) => {
+  console.log(req.body);
   const shapeToUpdate = await shapesDoc.findByIdAndUpdate(
     req.params.id,
     { ...req.body },
@@ -42,6 +43,7 @@ const updateShape = asyncWrapper(async (req, res, next) => {
 });
 
 const deleteShape = asyncWrapper(async (req, res, next) => {
+  console.log(req.params.id);
   const shapeToDelete = await shapesDoc.findByIdAndDelete(req.params.id);
   if (!shapeToDelete)
     return next(createCustomError("Shape was not found", 404));
