@@ -28,7 +28,6 @@ const getShape = asyncWrapper(async (req, res) => {
 });
 
 const updateShape = asyncWrapper(async (req, res, next) => {
-  console.log(req.body);
   const shapeToUpdate = await shapesDoc.findByIdAndUpdate(
     req.params.id,
     { ...req.body },
