@@ -43,9 +43,9 @@ const initializeOrUpdatePassCode = async (req, res) => {
 // };
 
 const validatePassCode = asyncWrapper(async (req, res) => {
-  const { userInput } = req.body;
+  const { password } = req.body;
   const { passCode } = await passCodeDoc.findOne({});
-  const isValid = userInput === passCode;
+  const isValid = password === passCode;
   return res.status(200).json({isValid});
 });
 
