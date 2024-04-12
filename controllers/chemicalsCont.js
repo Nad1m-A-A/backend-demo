@@ -8,10 +8,9 @@ const getChemicals = asyncWrapper(async (req, res) => {
 
 const addChemical = asyncWrapper(async (req, res, next) => {
   const chemicalName = req.body.name;
+  console.log(req.body);
   try {
-    await chemicalsDoc.create({
-      name: chemicalName,
-    });
+    await chemicalsDoc.create(req.body);
     return res.status(200).json({
       success: true,
       message: `${chemicalName} was added successfully!`,
@@ -27,9 +26,10 @@ const addChemical = asyncWrapper(async (req, res, next) => {
 });
 
 const updateChemical = asyncWrapper(async (req, res, next) => {
+  const { name, count, threshold } = req.body;
   const chemicalToUpdate = await chemicalsDoc.findByIdAndUpdate(
     req.params.id,
-    { count: req.body.count },
+    { name, count, threshold },
     { new: true }
   );
   if (!chemicalToUpdate)

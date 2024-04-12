@@ -10,8 +10,12 @@ const chemicalsSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  threshold: {
+    type: Number,
+    default: 0,
+  },
 });
 
-chemicalsSchema.index({ name: 1 }, { unique: true }); //! How to prevent duplicates using the index
+chemicalsSchema.index({ name: 1 }, { unique: true });
 
 module.exports = mongoose.model("Chemical", chemicalsSchema);
