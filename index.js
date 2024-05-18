@@ -23,6 +23,8 @@ app.use(errorHandler);
 
 connectDB();
 
+const base_url = process.env.APP_BASE_URL || "https://backend-demo-sigma.vercel.app"
+
 app.get("/", (req, res) => {
   res.setHeader("Content-Type", "text/html");
   return res.status(200).send(`
